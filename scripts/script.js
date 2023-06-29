@@ -9,18 +9,19 @@ const getAllChars = async () => {
 
 		const characters = data.results;
 
-		imgsContainer.innerHTML = characters.map((char) => {
-			return `<div class='img-container'>
-			
+		imgsContainer.innerHTML = characters
+			.map((char) => {
+				return `<div class='img-container'>
 			<img src='${char.image}'>
-			
-			
-			
+			<p>${char.name}</p>
+			<a href="../pages/detail.html?id=${char.id}">See Details</a>
 			</div>`;
-		});
+			})
+			.join('');
+		console.log(imgsContainer.innerHTML);
 	} catch (error) {
 		console.log(error);
 	}
 };
 
-getAllChars(2);
+getAllChars();
