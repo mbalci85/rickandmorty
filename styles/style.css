@@ -2,12 +2,28 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 
 main {
-   
     background-color: var(--background);
+}
+
+
+
+#heading {
+    text-align: center;
+    padding: 30px;
+}
+
+#search {
+    margin: 10px;
+    height: 35px;
+    width: 50%;
+    border: none;
+    padding: 5px;
+    border-radius: 4px;
 }
 
 #all-imgs {
@@ -25,4 +41,11 @@ main {
 
 .img-container p {
     margin: 15px 0 10px 0 ;
+}
+
+.img-card-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }

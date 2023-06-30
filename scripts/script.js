@@ -13,12 +13,13 @@ const getAllChars = async () => {
 			.map((char) => {
 				return `<div class='img-container'>
 			<img src='${char.image}'>
-			<p>${char.name}</p>
-			<a href="../pages/detail.html?id=${char.id}">See Details</a>
+			<div class='img-card-info'>
+				<p>${char.name}</p>
+				<a href="../pages/detail.html?id=${char.id}">See Details</a>
+			</div>
 			</div>`;
 			})
 			.join('');
-		console.log(imgsContainer.innerHTML);
 	} catch (error) {
 		console.log(error);
 	}
