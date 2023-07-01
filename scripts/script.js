@@ -2,7 +2,7 @@ const BASE_URL = 'https://rickandmortyapi.com/api';
 const imgsContainer = document.querySelector('#all-imgs');
 const pageNumInput = document.querySelector('#page-count-input');
 
-const getAllChars = async () => {
+const getAllChars = async (pageNum) => {
 	try {
 		const response = await fetch(`${BASE_URL}/character/?page=${pageNum}`);
 		const data = await response.json();
@@ -29,13 +29,11 @@ const getAllChars = async () => {
 };
 
 const pageForm = document.querySelector('#go-to-page');
-let pageNum;
+
 pageForm.addEventListener('submit', (e) => {
 	e.preventDefault();
-	pageNum = pageNumInput.value;
-
+	getAllChars(pageNumInput.value);
 	pageNumInput.value = '';
-	getAllChars();
 });
 
-getAllChars();
+getAllChars(1);
