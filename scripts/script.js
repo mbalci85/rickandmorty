@@ -1,14 +1,15 @@
-import { updateImgContainer, handlePageNavigation, getDOMElements } from './utils.js';
-
-// Call the function to get the variables
-let { imgsContainer, pageNumHeader, nextLink, prevLink, currentPage } = getDOMElements();
+import { updateImgContainer, imgsContainer } from './utils.js';
 
 const BASE_URL = 'https://rickandmortyapi.com/api';
+let pageNumHeader = document.querySelector('#page-num');
 let pageNumInput = document.querySelector('#page-count-input');
 let searchByName = document.querySelector('#search');
 let prevBtn = document.querySelector('#prev-btn');
 let nextBtn = document.querySelector('#next-btn');
 let pageCount;
+let nextLink;
+let prevLink;
+let currentPage = 1;
 
 const getAllChars = async (pageNum = 1) => {
 	try {
@@ -18,8 +19,8 @@ const getAllChars = async (pageNum = 1) => {
 		const characters = data.results;
 		pageCount = data.info.pages;
 
-		// nextLink = data.info.next;
-		// prevLink = data.info.prev;
+		nextLink = data.info.next;
+		prevLink = data.info.prev;
 
 		pageNumInput.placeholder = `Up to ${pageCount}`;
 		pageNumHeader.innerHTML = `Page ${pageNum}`;
@@ -62,13 +63,27 @@ searchByName.addEventListener('input', async (e) => {
 
 getAllChars();
 
+//Utility func to handle page navigation
+export const handlePageNavigation = async (link) => {
+	try {
+		const response = await fetch(link);
+		const data = await response.json();
+		const characters = data.results;
+		updateImgContainer(characters);
+		nextLink = data.info.next;
+		prevLink = data.info.prev;
+		pageNumHeader.innerHTML = `Page ${currentPage}`;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 //Previous Page Function
 prevBtn.addEventListener('click', async (e) => {
 	e.preventDefault();
 	if (prevLink != null) {
 		handlePageNavigation(prevLink);
 		currentPage--;
-		console.log(currentPage);
 	}
 });
 
@@ -78,6 +93,5 @@ nextBtn.addEventListener('click', async (e) => {
 	if (nextLink != null) {
 		handlePageNavigation(nextLink);
 		currentPage++;
-		console.log(currentPage);
 	}
 });
