@@ -26,6 +26,17 @@ main {
     border-radius: 4px;
 }
 
+#page-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#page-control p {
+    font-size: 20px;
+    font-weight: bolder;
+    margin: 20px;
+}
+
 #all-imgs {
     display: flex;
     justify-content: center;
