@@ -1,15 +1,18 @@
-import { updateImgContainer, imgsContainer } from './utils.js';
+import {
+	imgsContainer,
+	pageNumHeader,
+	DOMElements,
+	updateImgContainer,
+	handlePageNavigation,
+} from './utils.js';
 
 const BASE_URL = 'https://rickandmortyapi.com/api';
-let pageNumHeader = document.querySelector('#page-num');
+
 let pageNumInput = document.querySelector('#page-count-input');
 let searchByName = document.querySelector('#search');
 let prevBtn = document.querySelector('#prev-btn');
 let nextBtn = document.querySelector('#next-btn');
 let pageCount;
-let nextLink;
-let prevLink;
-let currentPage = 1;
 
 const getAllChars = async (pageNum = 1) => {
 	try {
@@ -19,12 +22,12 @@ const getAllChars = async (pageNum = 1) => {
 		const characters = data.results;
 		pageCount = data.info.pages;
 
-		nextLink = data.info.next;
-		prevLink = data.info.prev;
+		DOMElements.setNextLink(data.info.next);
+		DOMElements.setPrevLink(data.info.prev);
 
 		pageNumInput.placeholder = `Up to ${pageCount}`;
 		pageNumHeader.innerHTML = `Page ${pageNum}`;
-		currentPage = pageNum;
+		DOMElements.setCurrentPage(pageNum);
 		searchByName.value = '';
 
 		updateImgContainer(characters);
@@ -50,12 +53,10 @@ searchByName.addEventListener('input', async (e) => {
 		const filteredChars = data.results;
 		pageCount = data.info.pages;
 		pageNumInput.placeholder = `Up to ${pageCount}`;
-		pageNumHeader.innerHTML = `Page ${(currentPage = 1)}`;
+		pageNumHeader.innerHTML = `Page ${(DOMElements.currentPage = 1)}`;
 		updateImgContainer(filteredChars);
-		nextLink = data.info.next;
-		prevLink = data.info.prev;
-
-		console.log(nextLink);
+		DOMElements.setNextLink(data.info.next);
+		DOMElements.setPrevLink(data.info.prev);
 	} catch (error) {
 		console.log(error);
 		imgsContainer.innerHTML = '';
@@ -66,35 +67,24 @@ searchByName.addEventListener('input', async (e) => {
 
 getAllChars();
 
-//Utility func to handle page navigation
-export const handlePageNavigation = async (link) => {
-	try {
-		const response = await fetch(link);
-		const data = await response.json();
-		const characters = data.results;
-		updateImgContainer(characters);
-		nextLink = data.info.next;
-		prevLink = data.info.prev;
-		pageNumHeader.innerHTML = `Page ${currentPage}`;
-	} catch (error) {
-		console.log(error);
-	}
-};
-
 //Previous Page Function
 prevBtn.addEventListener('click', async (e) => {
 	e.preventDefault();
-	if (prevLink != null) {
-		handlePageNavigation(prevLink);
-		currentPage--;
+	if (DOMElements.prevLink != null) {
+		handlePageNavigation(DOMElements.prevLink);
+		DOMElements.currentPage--;
 	}
 });
 
 //Next Button Function
 nextBtn.addEventListener('click', async (e) => {
 	e.preventDefault();
-	if (nextLink != null) {
-		handlePageNavigation(nextLink);
-		currentPage++;
+	if (DOMElements.nextLink != null) {
+		handlePageNavigation(DOMElements.nextLink);
+		DOMElements.currentPage++;
 	}
 });
+
+const addToFav = () => {
+	console.log('hello');
+};
