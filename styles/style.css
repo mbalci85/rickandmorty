@@ -60,3 +60,9 @@ main {
     align-items: center;
     width: 100%;
 }
+
+#add-fav {
+    color: red;
+    font-size: 28px;
+    cursor: pointer;
+}
