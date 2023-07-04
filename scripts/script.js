@@ -50,9 +50,12 @@ searchByName.addEventListener('input', async (e) => {
 		const filteredChars = data.results;
 		pageCount = data.info.pages;
 		pageNumInput.placeholder = `Up to ${pageCount}`;
-		pageNumHeader.innerHTML = 'Page 1';
-
+		pageNumHeader.innerHTML = `Page ${(currentPage = 1)}`;
 		updateImgContainer(filteredChars);
+		nextLink = data.info.next;
+		prevLink = data.info.prev;
+
+		console.log(nextLink);
 	} catch (error) {
 		console.log(error);
 		imgsContainer.innerHTML = '';
