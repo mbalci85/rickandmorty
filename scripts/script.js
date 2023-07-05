@@ -1,7 +1,7 @@
 import {
 	imgsContainer,
 	pageNumHeader,
-	DOMElements,
+	domElements,
 	updateImgContainer,
 	handlePageNavigation,
 } from './utils.js';
@@ -22,12 +22,12 @@ const getAllChars = async (pageNum = 1) => {
 		const characters = data.results;
 		pageCount = data.info.pages;
 
-		DOMElements.setNextLink(data.info.next);
-		DOMElements.setPrevLink(data.info.prev);
+		domElements.setNextLink(data.info.next);
+		domElements.setPrevLink(data.info.prev);
 
 		pageNumInput.placeholder = `Up to ${pageCount}`;
 		pageNumHeader.innerHTML = `Page ${pageNum}`;
-		DOMElements.setCurrentPage(pageNum);
+		domElements.setCurrentPage(pageNum);
 		searchByName.value = '';
 
 		updateImgContainer(characters);
@@ -35,6 +35,7 @@ const getAllChars = async (pageNum = 1) => {
 		console.log(error);
 	}
 };
+getAllChars();
 
 //Go to Page Function
 const pageForm = document.querySelector('#go-to-page');
@@ -53,10 +54,10 @@ searchByName.addEventListener('input', async (e) => {
 		const filteredChars = data.results;
 		pageCount = data.info.pages;
 		pageNumInput.placeholder = `Up to ${pageCount}`;
-		pageNumHeader.innerHTML = `Page ${(DOMElements.currentPage = 1)}`;
+		pageNumHeader.innerHTML = `Page ${(domElements.currentPage = 1)}`;
 		updateImgContainer(filteredChars);
-		DOMElements.setNextLink(data.info.next);
-		DOMElements.setPrevLink(data.info.prev);
+		domElements.setNextLink(data.info.next);
+		domElements.setPrevLink(data.info.prev);
 	} catch (error) {
 		console.log(error);
 		imgsContainer.innerHTML = '';
@@ -65,26 +66,42 @@ searchByName.addEventListener('input', async (e) => {
 	}
 });
 
-getAllChars();
-
 //Previous Page Function
 prevBtn.addEventListener('click', async (e) => {
 	e.preventDefault();
-	if (DOMElements.prevLink != null) {
-		handlePageNavigation(DOMElements.prevLink);
-		DOMElements.currentPage--;
+	if (domElements.prevLink != null) {
+		handlePageNavigation(domElements.prevLink);
+		domElements.currentPage--;
 	}
 });
 
 //Next Button Function
 nextBtn.addEventListener('click', async (e) => {
 	e.preventDefault();
-	if (DOMElements.nextLink != null) {
-		handlePageNavigation(DOMElements.nextLink);
-		DOMElements.currentPage++;
+	if (domElements.nextLink != null) {
+		handlePageNavigation(domElements.nextLink);
+		domElements.currentPage++;
 	}
 });
 
-const addToFav = () => {
-	console.log('hello');
+//Add to Fav Functionality
+
+const addToFav = (id) => {
+	const favItems = JSON.parse(localStorage.getItem('fav-items'));
+	if (!favItems.includes(id)) {
+		favItems.push(id);
+		localStorage.setItem('fav-items', JSON.stringify(favItems));
+		document.querySelector(`[data-id="${id}"]`).style.color = 'red';
+	} else {
+		const newItems = favItems.filter((item) => item != id);
+		localStorage.setItem('fav-items', JSON.stringify(newItems));
+		document.querySelector(`[data-id="${id}"]`).style.color = 'black';
+	}
 };
+
+imgsContainer.addEventListener('click', (event) => {
+	if (event.target.classList.contains('fa-heart')) {
+		const id = event.target.dataset.id;
+		addToFav(id);
+	}
+});
