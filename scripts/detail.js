@@ -12,8 +12,6 @@ const showMainChar = async () => {
 		const response = await fetch(`${BASE_URL}/${currentID}`);
 		const data = await response.json();
 
-		console.log(data);
-
 		imgContainer.innerHTML = `
             <img src='${data.image}'>
             <p class='char-info'>Name: ${data.name}</p>
